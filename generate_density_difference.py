@@ -18,9 +18,7 @@ cube_part1.read(argv[2])
 cube_part2.read(argv[3])
 
 
-cube_noninteracting = cube_part1+cube_part2
-cube_sys-cube_noninteracting
+cube_part1+cube_part2
+cube_sys-cube_part1
 
-
-
-cube_sys.write('density_difference.cube)
+cube_sys.write('density_difference.cube')

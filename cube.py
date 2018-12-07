@@ -75,7 +75,7 @@ class cube:
         if filename:
             self.filename=str(filename)
         cubefile = open(self.filename, "r")
-        #print "Reading cube file: ", cubefile.name
+        print "Reading cube file: ", cubefile.name
         cubefile.next()
         cubefile.next()
         cube_content_list = [line for line in cubefile]
