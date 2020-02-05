@@ -7,7 +7,7 @@ filename = str(sys.argv[1])
 start = time.time()
 cube.read(filename)
 stop = time.time()
-print 'runtime of read-in:', stop-start
+print('runtime of read-in:', stop-start)
 
 cube.density.shape=(cube.x_len,cube.y_len,cube.z_len)
 

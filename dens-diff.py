@@ -12,7 +12,7 @@ file2 = sys.argv[2]
 #density or orbital difference
 #Their grids have to have the same dimension and everything
 
-print 'density difference between ', file1 , ' and ', file2
+print('density difference between ', file1 , ' and ', file2)
 if True:
   startingpoint = []
   n_atoms = None
@@ -30,8 +30,8 @@ if True:
   test = wvfn1[currentline].split()
   for i in range(3) :
     startingpoint.append( float( test[i+1] ) )
-  print 'n_atoms         startingpoint  '
-  print n_atoms, '    ', startingpoint
+  print('n_atoms         startingpoint  ')
+  print(n_atoms, '    ', startingpoint)
   currentline += 1
   test = wvfn1[currentline].split()
   voxels_x = int(test[0])
@@ -42,8 +42,8 @@ if True:
   currentline += 1
   test = wvfn1[currentline].split()
   voxels_z = int(test[0])
-  print ' voxels                increment '
-  print  voxels_x, ' ' , voxels_y, ' ' , voxels_z,'      ', incr
+  print(' voxels                increment ')
+  print(voxels_x, ' ' , voxels_y, ' ' , voxels_z,'      ', incr)
   currentline +=1
   #forget the coordinates
   currentline += n_atoms

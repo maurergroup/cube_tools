@@ -13,7 +13,7 @@ file1 = sys.argv[1]
 #Bohr=1./Bohr
 
 Overlap = []
-print 'Integrate ',file1,' in x and y direction'
+print(('Integrate ',file1,' in x and y direction'))
 for i in range(1):
 
   startingpoint = []
@@ -31,8 +31,8 @@ for i in range(1):
   test = wvfn1[currentline].split()
   for i in range(3) :
     startingpoint.append( float( test[i+1] ) )
-  print 'n_atoms         startingpoint  '
-  print n_atoms, '    ', startingpoint
+  print('n_atoms         startingpoint  ')
+  print((n_atoms, '    ', startingpoint))
   currentline += 1
   test = wvfn1[currentline].split()
   voxels_x = int(test[0])
@@ -43,8 +43,8 @@ for i in range(1):
   currentline += 1
   test = wvfn1[currentline].split()
   voxels_z = int(test[0])
-  print ' voxels                increment '
-  print  voxels_x, ' ' , voxels_y, ' ' , voxels_z,'      ', incr
+  print(' voxels                increment ')
+  print((voxels_x, ' ' , voxels_y, ' ' , voxels_z,'      ', incr))
   currentline +=1
   #forget the coordinates
   currentline += n_atoms
@@ -78,10 +78,10 @@ for i in range(1):
 #        norm1 += func1[ix*voxels_x*voxels_y+iy*voxels_y+iz] * dV
 #    norm2 += result[iz] * incr
 
-  print 'norm1  : ',norm1*Bohr**3
-  print 'norm2  : ',norm2*Bohr**3
+  print(('norm1  : ',norm1*Bohr**3))
+  print(('norm2  : ',norm2*Bohr**3))
   out=open('Output.txt',mode='w')
-  print 'voxels ', voxels_x
+  print(('voxels ', voxels_x))
   for ix in range(voxels_x):
     out.write('{0:16.8f} {1:16.8f} \n'.format((ix*incr+startingpoint[0])*Bohr,result[ix]*Bohr**2))
 

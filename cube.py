@@ -9,15 +9,15 @@ def arr2D(list2D):
     h = len(list2D)
     w = len(list2D[0])
     array = np.empty((h,w))
-    for i in xrange(h):
-        for j in xrange(w):
+    for i in range(h):
+        for j in range(w):
             array[i,j] = list2D[i][j]
     return array
 
 def arr1D(list1D):
     length = len(list1D)
     array = np.empty(length)
-    for i in xrange(length):
+    for i in range(length):
         array[i] = list1D[i]
     return array
 
@@ -58,13 +58,13 @@ class cube:
                 if silent:
                     pass
                 else:
-                    print 'point lies outside of cube cell = density 0.0'
+                    print('point lies outside of cube cell = density 0.0')
                 return 0.0
             int_coord = np.array(frac_coord * [self.x_len,self.y_len,self.z_len],dtype=np.int)
             copy_density = self.density.reshape([self.x_len,self.y_len,self.z_len])
             return copy_density[int_coord[0],int_coord[1],int_coord[2]]
         else:
-            print 'First set a cube file with self.read'
+            print('First set a cube file with self.read')
 
     def read(self, filename, castep2cube_format=False):
         ''' The function reads a cube file starting from the third line (the first two lines are usually reserved for comments and contain no data).
@@ -75,14 +75,14 @@ class cube:
         if filename:
             self.filename=str(filename)
         cubefile = open(self.filename, "r")
-        print "Reading cube file: ", cubefile.name
-        cubefile.next()
-        cubefile.next()
+        print(("Reading cube file: ", cubefile.name))
+        next(cubefile)
+        next(cubefile)
         cube_content_list = [line for line in cubefile]
         cube_content_joined = "".join(cube_content_list)
         cubefile.close()
         cube_content_split = cube_content_joined.split()
-        cube_content = map(float, cube_content_split)
+        cube_content = list(map(float, cube_content_split))
         self.n_atoms = int(cube_content[0])
         self.origin = np.array(cube_content[1:4])*self.bohr2ang
         self.x_len = int(cube_content[4])
@@ -118,7 +118,7 @@ class cube:
                                                        self.atoms_array[i][3]))
                 fd.write(str('%12.6f') %(self.atoms_array[i][4]))
                 fd.write('\n')
-        for i in xrange(len(self.density)):
+        for i in range(len(self.density)):
             fd.write(str('%12.6f') %(self.density[i]))
             if (i%6==5):
                 fd.write('\n')
@@ -150,17 +150,17 @@ class cube:
         self.x_len = self.x_len-1
         self.y_len = self.y_len-1
         self.z_len = self.z_len-1
-        print type(self.density)
-        print self.density.shape
+        print((type(self.density)))
+        print((self.density.shape))
 
     def integrate_xy(self, filename_out):
         copy_density = self.density
         copy_density.shape = (self.x_len,self.y_len,self.z_len)
         copy_density = copy_density.sum(axis=(0,1))*np.linalg.norm(np.cross(self.x_vec,self.y_vec))*self.bohr2ang**2
-        print 'shape of original density', self.density.shape
-        print 'shape of new density', copy_density.shape
+        print(('shape of original density', self.density.shape))
+        print(('shape of new density', copy_density.shape))
         fd=open('./'+str(filename_out), 'w+')
-        for i in xrange(len(copy_density)):
+        for i in range(len(copy_density)):
             fd.write(str('%12.6f %12.6f\n') %( i*np.linalg.norm(self.z_vec)*self.bohr2ang,copy_density[i]))
         fd.close()
 
@@ -177,37 +177,37 @@ class cube:
         order (an integer) related to the specified cube objects density in np.array format
         and the volume of a voxel in the cube file (jacobi).'''
 
-        print 'Calculating multipole moment'
+        print('Calculating multipole moment')
         if order>0:
             ind_array = [[integer/self.z_len/self.y_len,integer/self.z_len%self.y_len,integer%self.z_len] \
-                         for integer in xrange(self.n_points)]
+                         for integer in range(self.n_points)]
             index_array = arr2D(ind_array)
             r_vec = np.dot(index_array,self.xyz_array)
         if order == 0:
             result = np.sum(self.density)*self.jacobi
-            print 'multipole moment of order 0:\n', result
+            print(('multipole moment of order 0:\n', result))
             return result
         elif order>0:
             outer = np.outer
             def multiple_outer(a):
                 b = a
-                for i in xrange(order-1):
+                for i in range(order-1):
                     b = outer(b,a)
                 b.shape=tuple([3]*order)
                 return b
-            mult_array=map(multiple_outer, r_vec)
+            mult_array=list(map(multiple_outer, r_vec))
         else:
             raise ValueError('Value for the input parameter "order" is not defined.')
         mult_array = np.array(mult_array)
         result = np.tensordot(self.density, mult_array,axes=1)*self.jacobi
         result.shape = tuple([3]*order)
-        print 'multipole moment of order %i:\n' %order, result
+        print(('multipole moment of order %i:\n' %order, result))
         return result
 
     def dipole_map_xy(self):
         '''calculates an xy map of the dipole moments in z direction'''
 
-        print 'Calculating dipole moment map'
+        print('Calculating dipole moment map')
         e0 = 0.00552635
 
         copy_density = self.density

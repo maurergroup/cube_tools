@@ -20,7 +20,7 @@ for i in range(n_configs):
   file2.append( inputfile[i].split()[2])
 
 Overlap = []
-print 'Overlap between ', file1 , ' and ', file2
+print('Overlap between ', file1 , ' and ', file2)
 for nc in range(n_configs):
 
   startingpoint = []
@@ -39,8 +39,8 @@ for nc in range(n_configs):
   test = wvfn1[currentline].split()
   for i in range(3) :
     startingpoint.append( float( test[i+1] ) )
-  print 'n_atoms         startingpoint  '
-  print n_atoms, '    ', startingpoint
+  print('n_atoms         startingpoint  ')
+  print(n_atoms, '    ', startingpoint)
   currentline += 1
   test = wvfn1[currentline].split()
   voxels_x = int(test[0])
@@ -51,8 +51,8 @@ for nc in range(n_configs):
   currentline += 1
   test = wvfn1[currentline].split()
   voxels_z = int(test[0])
-  print ' voxels                increment '
-  print  voxels_x, ' ' , voxels_y, ' ' , voxels_z,'      ', incr
+  print(' voxels                increment ')
+  print(voxels_x, ' ' , voxels_y, ' ' , voxels_z,'      ', incr)
   currentline +=1
   #forget the coordinates
   currentline += n_atoms
@@ -82,15 +82,15 @@ for nc in range(n_configs):
 	norm2 += (func2[ix*voxels_x*voxels_y+iy*voxels_y+iz]**2) * dV
 	result += func_product[ix*voxels_x*voxels_y+iy*voxels_y+iz] * dV
 
-  print 'config ', nc
-  print norm1
-  print norm2
-  print result
-  print '---------------------'
+  print('config ', nc)
+  print(norm1)
+  print(norm2)
+  print(result)
+  print('---------------------')
   Overlap.append( result/np.sqrt(norm1*norm2) )
-  print 'Overlap ', Overlap[nc]
+  print('Overlap ', Overlap[nc])
   
-print 'Calculating Lambda'
+print('Calculating Lambda')
 coeff_sum = 0.0
 lamda = 0.0
 for nc in range(n_configs):
@@ -99,4 +99,4 @@ for nc in range(n_configs):
   lamda += Overlap[nc] * coeff[nc]
   
 lamda /= coeff_sum
-print 'LAMDA  ', lamda
+print('LAMDA  ', lamda)
