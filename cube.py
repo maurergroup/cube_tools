@@ -132,6 +132,29 @@ class cube:
         new_density = self.density + a*A.density
         self.density = new_density
 
+    def laplacian(self, h=1): #h is pixel 
+        copy_density = self.density.reshape([self.x_len,self.y_len,self.z_len]) # reshape into 3D
+        laplacian = np.zeros_like(copy_density)
+        cube_dimensions = self.xyz_array*[self.x_len,self.y_len,self.z_len]
+        cube_dim_inv = np.linalg.inv(cube_dimensions)
+        
+        h_x2 = np.linalg.norm(self.x_vec)**2
+        h_y2 = np.linalg.norm(self.y_vec)**2
+        h_z2 = np.linalg.norm(self.z_vec)**2
+        for ix in range(1,self.x_len-1): # start at 2nd and end at 2nd to last voxel
+            for iy in range(1,self.y_len-1):
+                for iz in range(1,self.z_len-1):
+                    #do 2nd order finite difference
+                    d2x = copy_density[ix+1,iy,iz] - 2.0*copy_density[ix,iy,iz] + copy_density[ix-1,iy,iz]
+                    d2y = copy_density[ix,iy+1,iz] - 2.0*copy_density[ix,iy,iz] + copy_density[ix,iy-1,iz]
+                    d2z = copy_density[ix,iy,iz+1] - 2.0*copy_density[ix,iy,iz] + copy_density[ix,iy,iz-1]
+                    d2x /= h_x2; d2y /= h_y2; d2z /= h_z2
+                    laplacian[ix,iy,iz] = d2x + d2y + d2z 
+            print(".",end='')
+        print(' ')
+
+        self.density = laplacian.flatten()        
+        
     def __add__(A,B):
         '''Adds the density of a cube object B to A cube object A.
         This is not necessarily a commutative operation,
